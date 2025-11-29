@@ -1,0 +1,4 @@
+Variable,U Statistic,p-value,Significant
+BMI,2.41e+09,0.00e+00,True
+MentHlth,3.65e+09,1.75e-90,True
+PhysHlth,2.99e+09,0.00e+00,True

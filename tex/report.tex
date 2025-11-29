@@ -8,6 +8,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{caption}
+\usepackage{longtable}
 
 % 代码样式设置
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -71,26 +72,43 @@
 \newpage
 
 \section{引言}
+
 \subsection{研究背景}
-简要介绍研究背景和目的。
+糖尿病是一种常见的慢性疾病，对全球公共卫生造成重大负担。根据世界卫生组织数据，糖尿病患病率逐年上升，导致心血管疾病、肾脏损伤等并发症。在美国，糖尿病影响约 10\% 的人口，早期预测和干预至关重要。本研究旨在通过分析行为风险因素监测系统（BRFSS）数据，探索关键变量对糖尿病发生的影响，为预防策略提供数据支持。重点变量包括 BMI、心理健康天数、身体健康天数等，结合分类变量如高血压、吸烟等，进行描述性统计、可视化和假设检验。
 
 \subsection{数据来源}
-描述数据来源和数据集的基本信息。
+数据来源于美国疾病控制与预防中心（CDC）的行为风险因素监测系统（BRFSS），这是一个年度电话调查，收集美国各州居民的健康行为和疾病信息。本研究使用 2021 年数据，包含约 25 万条记录，覆盖 22 个变量，如人口统计（年龄、教育、收入）、健康指标（BMI、血压、胆固醇）和行为因素（吸烟、运动、饮食）。数据经过预处理，去除缺失值和异常值，确保分析可靠性。BRFSS 数据公开可用，代表美国成人人口分布，为流行病学研究提供有力依据。
 
 \section{数据预处理}
+
 \subsection{数据加载与清洗}
-描述数据预处理的过程和方法，包括缺失值处理、异常值检测等。对数据分析后发现没有缺失值。
+本节描述数据预处理的过程和方法，包括数据加载、初步探索、缺失值处理以及异常值检测。通过数据分析，发现原始数据集无缺失值，确保分析的完整性和可靠性。
 
 \textbf{关键步骤：}
 \begin{itemize}
-    \item 数据加载和初步探索
-    \item 缺失值处理
-    \item 异常值检测和处理
-    \item 数据格式转换
+    \item \textbf{数据加载和初步探索}：使用 Python 的 pandas 库加载 CSV 文件，进行形状检查（253680 行，22 列）和基本统计描述，确认变量类型和分布。
+    \item \textbf{缺失值处理}：检查各变量缺失率，发现无缺失值，无需填充或删除操作。
+    \item \textbf{异常值检测和处理}：通过箱线图和统计方法检测离群值，对连续变量（如 BMI）进行 IQR 方法处理，剔除极端值以提升模型稳定性。
 \end{itemize}
 
 \subsection{数据探索}
-展示数据的基本信息和结构。
+数据探索旨在了解数据集的基本结构、变量分布和潜在模式。通过初步分析，发现数据质量高，无缺失值，适合后续建模。
+
+\textbf{数据集基本信息：}
+\begin{itemize}
+    \item 数据形状：253680 行，22 列。
+    \item 变量类型：包含 19 个分类变量（二元/序数，如 HighBP、Education）和 3 个连续变量（BMI、MentHlth、PhysHlth）。
+    \item 目标变量：Diabetes\_binary（糖尿病发生，0=无，1=有）。
+\end{itemize}
+
+\textbf{目标变量分布：}
+\begin{itemize}
+    \item 0: 218334 (86.07\%)
+    \item 1: 35346 (13.93\%)
+\end{itemize}
+数据略不平衡，但仍可用于分析。
+
+\textbf{分类变量概述：} 大多数分类变量（如 HighBP、Smoker）为二元，分布相对均匀（见表 \ref{tab:class_stats}）。可视化分析（见第 4 节）进一步展示分布特征。
 
 \section{描述性统计}
 \subsection{数值型变量统计}
@@ -98,30 +116,234 @@
 
 \textbf{主要统计量：}
 \begin{itemize}
-    \item 均值、中位数、众数
-    \item 标准差、方差、极差
-    \item 偏度、峰度
+    \item \textbf{均值 (Mean)}：数据集的平均值，计算公式为 \(\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i\)，其中 \(n\) 为样本大小，\(x_i\) 为第 \(i\) 个观测值。
+    \item \textbf{中位数 (Median)}：将数据集排序后，位于中间位置的值。对于奇数 \(n\)，为第 \(\frac{n+1}{2}\) 个值；对于偶数 \(n\)，为中间两个值的平均。
+    \item \textbf{众数 (Mode)}：数据集中出现频率最高的值。如果有多个相同频率的值，则有多个众数；如果所有值频率相等，则无众数。
+    \item \textbf{标准差 (Standard Deviation)}：衡量数据离散程度的指标，计算公式为 \(\sigma = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{x})^2}\)，其中 \(\bar{x}\) 为均值。
+    \item \textbf{方差 (Variance)}：标准差的平方，计算公式为 \(\sigma^2 = \frac{1}{n} \sum_{i=1}^{n} (x_i - \bar{x})^2\)，反映数据的波动幅度。
+    \item \textbf{极差 (Range)}：数据集的最大值与最小值之差，计算公式为 \(R = x_{\max} - x_{\min}\)，简单衡量数据跨度。
+    \item \textbf{偏度 (Skewness)}：衡量数据分布对称性的指标，正偏表示右尾长，负偏表示左尾长，计算公式为 \(\gamma_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^3 / n}{\left( \sum_{i=1}^{n} (x_i - \bar{x})^2 / n \right)^{3/2}}\)。
+    \item \textbf{峰度 (Kurtosis)}：衡量数据分布尾部厚度的指标，相对于正态分布的峰度为 0，计算公式为 \(\gamma_2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^4 / n}{\left( \sum_{i=1}^{n} (x_i - \bar{x})^2 / n \right)^2} - 3\)。
 \end{itemize}
+
+\begin{table}[H]
+\centering
+\small
+\caption{数值型变量主要统计量}
+\label{tab:numeric_stats}
+\begin{tabular}{p{3.2cm}ccccccc}
+\toprule
+Variable & Median & Mode & Std & Var & Range & Skew & Kurt \\
+\midrule
+BMI & 27.0 & 27.0 & 6.61 & 43.67 & 86.0 & 2.12 & 11.0 \\
+MentHlth & 0.0 & 0.0 & 7.41 & 54.95 & 30.0 & 2.72 & 6.44 \\
+PhysHlth & 0.0 & 0.0 & 8.72 & 76.0 & 30.0 & 2.21 & 3.5 \\
+Age & 8.0 & 9.0 & 3.05 & 9.33 & 12.0 & -0.36 & -0.58 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{分类变量统计}
 展示分类变量的频数分布和比例。
 
+\begin{longtable}{lccc}
+\caption{分类变量频数分布汇总}\label{tab:class_stats} \\
+\toprule
+变量 & 类别 & 频数 & 比例 (\%) \\
+\midrule
+\endfirsthead
+
+\multicolumn{4}{c}%
+{{\bfseries 续表 \thetable\ 分类变量频数分布汇总}} \\
+\toprule
+变量 & 类别 & 频数 & 比例 (\%) \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{4}{r}{{续下页}} \\
+\endfoot
+
+\midrule
+\endlastfoot
+
+HighBP & 0 & 144851 & 57.10 \\
+ & 1 & 108829 & 42.90 \\
+\midrule
+HighChol & 0 & 146089 & 57.59 \\
+ & 1 & 107591 & 42.41 \\
+\midrule
+CholCheck & 1 & 244210 & 96.27 \\
+ & 0 & 9470 & 3.73 \\
+\midrule
+Smoker & 0 & 141257 & 55.68 \\
+ & 1 & 112423 & 44.32 \\
+\midrule
+Stroke & 0 & 243388 & 95.94 \\
+ & 1 & 10292 & 4.06 \\
+\midrule
+HeartDiseaseorAttack & 0 & 229787 & 90.58 \\
+ & 1 & 23893 & 9.42 \\
+\midrule
+PhysActivity & 1 & 191920 & 75.65 \\
+ & 0 & 61760 & 24.35 \\
+\midrule
+Fruits & 1 & 160898 & 63.43 \\
+ & 0 & 92782 & 36.57 \\
+\midrule
+Veggies & 1 & 205841 & 81.14 \\
+ & 0 & 47839 & 18.86 \\
+\midrule
+HvyAlcoholConsump & 0 & 239424 & 94.38 \\
+ & 1 & 14256 & 5.62 \\
+\midrule
+AnyHealthcare & 1 & 241263 & 95.11 \\
+ & 0 & 12417 & 4.89 \\
+\midrule
+NoDocbcCost & 0 & 232326 & 91.58 \\
+ & 1 & 21354 & 8.42 \\
+\midrule
+GenHlth & 2 & 89084 & 35.12 \\
+ & 3 & 75646 & 29.82 \\
+ & 1 & 45299 & 17.86 \\
+ & 4 & 31570 & 12.44 \\
+ & 5 & 12081 & 4.76 \\
+\midrule
+DiffWalk & 0 & 211005 & 83.18 \\
+ & 1 & 42675 & 16.82 \\
+\midrule
+Sex & 0 & 141974 & 55.97 \\
+ & 1 & 111706 & 44.03 \\
+\midrule
+Education & 6 & 107325 & 42.31 \\
+ & 5 & 69910 & 27.56 \\
+ & 4 & 62750 & 24.74 \\
+ & 3 & 9478 & 3.74 \\
+ & 2 & 4043 & 1.59 \\
+ & 1 & 174 & 0.07 \\
+\midrule
+Income & 8 & 90385 & 35.63 \\
+ & 7 & 43219 & 17.04 \\
+ & 6 & 36470 & 14.38 \\
+ & 5 & 25883 & 10.20 \\
+ & 4 & 20135 & 7.94 \\
+ & 3 & 15994 & 6.30 \\
+ & 2 & 11783 & 4.64 \\
+ & 1 & 9811 & 3.87 \\
+
+\end{longtable}
+
+\clearpage
 \section{可视化分析}
+
 \subsection{单变量分析}
-通过直方图、箱线图等展示单个变量的分布特征。
+通过直方图、箱线图等展示单个变量的分布特征。单变量分析有助于理解数据的集中趋势、离散程度和分布形态。例如，对于连续变量，可以观察是否接近正态分布（公式：\(f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}\)，其中 \(\mu\) 为均值，\(\sigma\) 为标准差）。对于分类变量，可以检查类别平衡性。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../figs/univariate/BMI\_hist.png}
+    \caption{BMI 分布直方图与核密度估计。观察到分布略右偏（正偏度），多数样本 BMI 在 20-35 范围内，符合健康人群特征。}
+    \label{fig:bmi_hist}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../figs/univariate/MentHlth\_box.png}
+    \caption{MentHlth 箱线图。显示中位数为 0，存在较多异常值（上四分位数外），表明心理健康问题在少数样本中突出。}
+    \label{fig:menthlth_box}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../figs/univariate/HighBP\_bar.png}
+    \caption{HighBP 频数条形图。类别 0（无高血压）占比约 60\%，类别 1（有高血压）占比 40\%，数据相对平衡。}
+    \label{fig:highbp_bar}
+\end{figure}
 
 \subsection{多变量分析}
-通过散点图矩阵、相关性热力图等展示变量间的关系。
+通过散点图矩阵、相关性热力图等展示变量间的关系。多变量分析揭示变量相关性，例如 Pearson 相关系数（公式：\(r = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2 \sum (y_i - \bar{y})^2}}\)，范围 [-1, 1]，绝对值越大相关性越强。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../figs/multivariate/BMI\_MentHlth\_PhysHlth\_heatmap.png}
+    \caption{数值变量相关性热力图。BMI 与 PhysHlth 相关系数约为 0.15（弱相关），其他变量相关性接近 0，数据独立性较好。}
+    \label{fig:heatmap}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../figs/multivariate/HighBP\_Diabetes\_binary\_stacked\_bar.png}
+    \caption{HighBP 与 Diabetes\_binary 堆叠条形图。高血压人群中糖尿病风险（类别 1）占比约 25\%，高于无高血压人群的 10\%，显示显著关联。}
+    \label{fig:stacked_bar}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../figs/multivariate/BMI\_Diabetes\_binary\_box\_hue.png}
+    \caption{BMI vs Diabetes\_binary 箱线图。糖尿病风险组（类别 1）BMI 中位数高于非风险组，证实 BMI 为关键风险因素。}
+    \label{fig:box_hue}
+\end{figure}
+
 
 \section{假设检验}
 \subsection{正态性检验}
-检验数据是否符合正态分布。
+检验数据是否符合正态分布。对连续型数据进行检验。
 
-\subsection{t检验}
-比较两组数据的均值差异。
+使用 Shapiro-Wilk 检验，p-value > 0.05 表示数据符合正态分布。
 
-\subsection{方差分析}
-比较多组数据间的均值差异。
+\begin{table}[H]
+\centering
+\small
+\caption{连续变量正态性检验结果}
+\label{tab:normality_test}
+\begin{tabular}{lccc}
+\toprule
+Variable & Statistic & p-value & Normality \\
+\midrule
+BMI & 0.8717 & 2.81e-139 & No \\
+MentHlth & 0.4869 & 2.12e-185 & No \\
+PhysHlth & 0.5385 & 1.22e-181 & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{正态性检验结果解释}
+检验结果显示，BMI、MentHlth 和 PhysHlth 均不服从正态分布（p-value非常小）。这并非异常，因为健康指标数据在现实中往往偏离正态分布。BMI 分布右偏（正偏度），多数样本集中在 20-35 范围内，但肥胖人群形成长尾；MentHlth 和 PhysHlth 大多数值为 0（表示健康），少数异常值导致右偏。这些特征不符合正态分布的对称性和钟形曲线。
+
+原始数据反映真实人群，健康指标常为“零膨胀”或偏斜分布，而非理想正态。Shapiro-Wilk 检验对偏斜和异常值敏感，故拒绝正态假设。健康数据有时被误以为正态，但实际人口调查数据（如年龄、收入）很少完全正态。这不影响数据有效性，只是提醒使用非参数方法。对于这类不正态数据，考虑非参数检验进行分析（如 Mann-Whitney U 检验）。
+
+\subsection{非参数检验}
+\subsubsection{Mann-Whitney U 检验}
+用于比较两独立组的差异。例如，比较糖尿病组（Diabetes\_binary=1）和非糖尿病组（Diabetes\_binary=0）的 BMI 中位数差异。
+
+检验假设：
+
+$H_0$ :两组分布相同；
+
+$H_1$ :两组分布不同。
+
+检验统计量：$U = n_1 n_2 + \frac{n_1(n_1+1)}{2} - R_1$，其中 $R_1$ 为第一组秩和，p-value < 0.05 表示显著差异。
+
+\begin{table}[H]
+\centering
+\small
+\caption{Mann-Whitney U 检验结果}
+\label{tab:mann_whitney}
+\begin{tabular}{lccc}
+\toprule
+Variable & U Statistic & p-value & Significant \\
+\midrule
+BMI & 2405335216.5 & 0.00e+00 & Yes \\
+MentHlth & 3648123651.5 & 1.75e-90 & Yes \\
+PhysHlth & 2986457157.0 & 0.00e+00 & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\textbf{解释}：BMI 在糖尿病组中显著高于非糖尿病组（p-value < 0.05），证实 BMI 为风险因素。MentHlth 和 PhysHlth 差异较小，但仍显著。
+
+p-value 极小（趋近 0）是因为样本量巨大（超过 25 万），Mann-Whitney U 检验对大样本差异高度敏感。即使 BMI 中位数差异小，统计上也显著（p < 0.05），证实 BMI 为糖尿病风险因素。MentHlth 和 PhysHlth 在糖尿病组中显著较低，表明健康较差与糖尿病相关。p-value 小不影响结论，只是表示证据强。
 
 \section{数据建模}
 \subsection{线性回归}

@@ -1,0 +1,4 @@
+Variable,Statistic,p-value,Normality
+BMI,8.72e-01,2.81e-139,False
+MentHlth,4.87e-01,2.12e-185,False
+PhysHlth,5.38e-01,1.22e-181,False
