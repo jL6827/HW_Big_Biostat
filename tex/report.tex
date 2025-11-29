@@ -1,0 +1,410 @@
+\documentclass[12pt]{ctexart}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+
+% 代码样式设置
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{python}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python
+}
+
+\lstdefinestyle{R}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=R
+}
+
+\title{数据分析报告}
+\author{你的名字}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+本报告对数据集进行了全面的分析，包括描述性统计、可视化分析、假设检验和数据建模。通过Python和R语言相结合的方式，深入挖掘数据特征和规律。
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{引言}
+\subsection{研究背景}
+简要介绍研究背景和目的。
+
+\subsection{数据来源}
+描述数据来源和数据集的基本信息。
+
+\section{数据预处理}
+\subsection{数据加载与清洗}
+描述数据预处理的过程和方法，包括缺失值处理、异常值检测等。
+
+\textbf{关键步骤：}
+\begin{itemize}
+    \item 数据加载和初步探索
+    \item 缺失值处理
+    \item 异常值检测和处理
+    \item 数据格式转换
+\end{itemize}
+
+\subsection{数据探索}
+展示数据的基本信息和结构。
+
+\section{描述性统计}
+\subsection{数值型变量统计}
+展示数值型变量的集中趋势、离散程度和分布形态。
+
+\textbf{主要统计量：}
+\begin{itemize}
+    \item 均值、中位数、众数
+    \item 标准差、方差、极差
+    \item 偏度、峰度
+\end{itemize}
+
+\subsection{分类变量统计}
+展示分类变量的频数分布和比例。
+
+\section{可视化分析}
+\subsection{单变量分析}
+通过直方图、箱线图等展示单个变量的分布特征。
+
+\subsection{多变量分析}
+通过散点图矩阵、相关性热力图等展示变量间的关系。
+
+\section{假设检验}
+\subsection{正态性检验}
+检验数据是否符合正态分布。
+
+\subsection{t检验}
+比较两组数据的均值差异。
+
+\subsection{方差分析}
+比较多组数据间的均值差异。
+
+\section{数据建模}
+\subsection{线性回归}
+建立线性回归模型，分析变量间的线性关系。
+
+\subsection{分类模型}
+使用逻辑回归等分类算法。
+
+\subsection{聚类分析}
+对数据进行聚类分析。
+
+\section{结论与建议}
+\subsection{主要发现}
+总结分析过程中的主要发现。
+
+\subsection{局限性}
+讨论分析的局限性。
+
+\subsection{建议}
+基于分析结果提出建议。
+
+\section*{参考文献}
+\begin{itemize}
+    \item 参考文献1
+    \item 参考文献2
+\end{itemize}
+
+\appendix
+\section{代码附录}
+
+\subsection{数据预处理代码}
+
+\subsubsection{Python数据加载与清洗}
+\begin{lstlisting}[style=python, caption=Python数据加载与清洗]
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 加载数据
+data = pd.read_csv('your_dataset.csv')
+
+# 数据清洗
+# 处理缺失值
+data = data.dropna()
+# 处理异常值
+# ... 其他预处理步骤
+
+# 查看数据基本信息
+print(data.info())
+print(data.describe())
+print(data.head())
+\end{lstlisting}
+
+\subsubsection{R数据加载与清洗}
+\begin{lstlisting}[style=R, caption=R数据加载与清洗]
+# 加载数据
+data <- read.csv('your_dataset.csv')
+
+# 数据清洗
+# 处理缺失值
+data <- na.omit(data)
+# 处理异常值
+# ... 其他预处理步骤
+
+# 查看数据基本信息
+summary(data)
+head(data)
+str(data)
+\end{lstlisting}
+
+\subsection{描述性统计代码}
+
+\subsubsection{Python描述性统计}
+\begin{lstlisting}[style=python, caption=Python描述性统计]
+# 数值型变量的描述性统计
+numeric_stats = data.describe()
+print(numeric_stats)
+
+# 计算偏度和峰度
+from scipy.stats import skew, kurtosis
+for column in data.select_dtypes(include=[np.number]).columns:
+    print(f"{column}: 偏度={skew(data[column])}, 峰度={kurtosis(data[column])}")
+
+# 分类变量的频数统计
+categorical_stats = data.describe(include=['object'])
+print(categorical_stats)
+
+# 各分类变量的频数分布
+for column in data.select_dtypes(include=['object']).columns:
+    print(f"\n{column}的频数分布:")
+    print(data[column].value_counts())
+\end{lstlisting}
+
+\subsubsection{R描述性统计}
+\begin{lstlisting}[style=R, caption=R描述性统计]
+# 数值型变量的描述性统计
+summary(data)
+
+# 计算偏度和峰度
+library(moments)
+for(col in names(data)[sapply(data, is.numeric)]){
+    cat(col, ": 偏度=", skewness(data[[col]]), 
+        ", 峰度=", kurtosis(data[[col]]), "\n")
+}
+
+# 分类变量统计
+table(data$categorical_variable)
+prop.table(table(data$categorical_variable))
+\end{lstlisting}
+
+\subsection{可视化分析代码}
+
+\subsubsection{Python单变量可视化}
+\begin{lstlisting}[style=python, caption=Python单变量可视化]
+# 数值型变量的直方图
+plt.figure(figsize=(15, 10))
+for i, column in enumerate(data.select_dtypes(include=[np.number]).columns):
+    plt.subplot(3, 3, i+1)
+    data[column].hist(bins=30)
+    plt.title(f'{column}分布')
+plt.tight_layout()
+plt.show()
+
+# 箱线图
+plt.figure(figsize=(15, 10))
+data.select_dtypes(include=[np.number]).boxplot()
+plt.title('数值型变量箱线图')
+plt.xticks(rotation=45)
+plt.show()
+\end{lstlisting}
+
+\subsubsection{Python多变量可视化}
+\begin{lstlisting}[style=python, caption=Python多变量可视化]
+# 散点图矩阵
+sns.pairplot(data.select_dtypes(include=[np.number]))
+plt.show()
+
+# 相关性热力图
+plt.figure(figsize=(10, 8))
+correlation_matrix = data.select_dtypes(include=[np.number]).corr()
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', center=0)
+plt.title('变量相关性热力图')
+plt.show()
+\end{lstlisting}
+
+\subsubsection{R可视化代码}
+\begin{lstlisting}[style=R, caption=R可视化代码]
+# 直方图
+par(mfrow=c(2,2))
+for(col in names(data)[sapply(data, is.numeric)]){
+    hist(data[[col]], main=paste(col, "分布"), xlab=col)
+}
+
+# 箱线图
+boxplot(data[sapply(data, is.numeric)], main="数值型变量箱线图")
+
+# 散点图矩阵
+pairs(data[sapply(data, is.numeric)])
+
+# 相关性热力图
+library(corrplot)
+cor_matrix <- cor(data[sapply(data, is.numeric)])
+corrplot(cor_matrix, method = "color")
+\end{lstlisting}
+
+\subsection{假设检验代码}
+
+\subsubsection{Python假设检验}
+\begin{lstlisting}[style=python, caption=Python假设检验]
+from scipy.stats import shapiro, normaltest, ttest_ind, ttest_rel
+
+# 正态性检验
+for column in data.select_dtypes(include=[np.number]).columns:
+    stat, p = shapiro(data[column])
+    print(f'{column}: Shapiro-Wilk检验 p值 = {p:.4f}')
+
+# D'Agostino检验
+for column in data.select_dtypes(include=[np.number]).columns:
+    stat, p = normaltest(data[column])
+    print(f'{column}: D\'Agostino检验 p值 = {p:.4f}')
+
+# 独立样本t检验示例
+group1 = data[data['group'] == 'A']['value']
+group2 = data[data['group'] == 'B']['value']
+t_stat, p_value = ttest_ind(group1, group2)
+print(f"独立样本t检验: t统计量={t_stat:.4f}, p值={p_value:.4f}")
+
+# 配对样本t检验示例
+t_stat, p_value = ttest_rel(data['before'], data['after'])
+print(f"配对样本t检验: t统计量={t_stat:.4f}, p值={p_value:.4f}")
+\end{lstlisting}
+
+\subsubsection{R假设检验}
+\begin{lstlisting}[style=R, caption=R假设检验]
+# 正态性检验
+for(col in names(data)[sapply(data, is.numeric)]){
+    result <- shapiro.test(data[[col]])
+    cat(col, ": Shapiro-Wilk检验 p值 =", result$p.value, "\n")
+}
+
+# t检验
+t_test_result <- t.test(value ~ group, data=data)
+print(t_test_result)
+
+# 方差分析
+anova_result <- aov(value ~ group, data=data)
+summary(anova_result)
+
+# 多因素方差分析
+anova_result2 <- aov(value ~ group1 * group2, data=data)
+summary(anova_result2)
+\end{lstlisting}
+
+\subsection{数据建模代码}
+
+\subsubsection{Python建模代码}
+\begin{lstlisting}[style=python, caption=Python线性回归]
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score, classification_report, confusion_matrix
+
+# 线性回归
+X = data[['feature1', 'feature2', 'feature3']]
+y = data['target']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+print(f"均方误差: {mse:.4f}")
+print(f"R²分数: {r2:.4f}")
+
+# 逻辑回归
+X_class = data[['feature1', 'feature2']]
+y_class = data['class']
+
+X_train_c, X_test_c, y_train_c, y_test_c = train_test_split(X_class, y_class, test_size=0.3, random_state=42)
+
+log_model = LogisticRegression()
+log_model.fit(X_train_c, y_train_c)
+
+y_pred_c = log_model.predict(X_test_c)
+
+print("分类报告:")
+print(classification_report(y_test_c, y_pred_c))
+print("混淆矩阵:")
+print(confusion_matrix(y_test_c, y_pred_c))
+\end{lstlisting}
+
+\subsubsection{R建模代码}
+\begin{lstlisting}[style=R, caption=R建模代码]
+# 线性回归
+model <- lm(target ~ feature1 + feature2 + feature3, data=data)
+summary(model)
+
+# 模型诊断
+par(mfrow=c(2,2))
+plot(model)
+
+# 逻辑回归
+log_model <- glm(class ~ feature1 + feature2, data=data, family=binomial)
+summary(log_model)
+
+# 聚类分析
+set.seed(123)
+kmeans_result <- kmeans(scale(data[sapply(data, is.numeric)]), centers=3)
+table(kmeans_result$cluster)
+
+# 可视化聚类结果
+library(factoextra)
+fviz_cluster(kmeans_result, data = data[sapply(data, is.numeric)])
+\end{lstlisting}
+
+\section{数据字典}
+提供数据字段的详细说明。
+
+\section{附加图表}
+额外的分析图表。
+
+\end{document}
