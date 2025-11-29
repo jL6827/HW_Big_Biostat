@@ -1,0 +1,4 @@
+method,column,n_outliers,pct_outliers
+iqr_outlier,BMI,9847,3.881661936297698
+iqr_outlier,MentHlth,36208,14.273099968464207
+iqr_outlier,PhysHlth,40949,16.1419899085462

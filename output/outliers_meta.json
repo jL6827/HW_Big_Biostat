@@ -1,0 +1,33 @@
+{
+  "input": "dataset_891/combined.csv",
+  "shape": [
+    253680,
+    22
+  ],
+  "continuous_cols": [
+    "BMI",
+    "MentHlth",
+    "PhysHlth"
+  ],
+  "params": {
+    "iqr_k": 1.5
+  },
+  "iqr_bounds": {
+    "BMI": {
+      "low": 13.5,
+      "high": 41.5
+    },
+    "MentHlth": {
+      "low": -3.0,
+      "high": 5.0
+    },
+    "PhysHlth": {
+      "low": -4.5,
+      "high": 7.5
+    }
+  },
+  "flag_columns_suffix_meaning": {
+    "__iqr_outlier": "IQR方法判定为异常",
+    "__any_outlier_flag": "行级别存在异常"
+  }
+}
