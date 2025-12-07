@@ -1,44 +1,39 @@
-\contentsline {section}{\numberline {1}引言}{4}{section.1}%
-\contentsline {subsection}{\numberline {1.1}研究背景}{4}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}数据来源}{4}{subsection.1.2}%
-\contentsline {section}{\numberline {2}数据预处理}{4}{section.2}%
-\contentsline {subsection}{\numberline {2.1}数据加载与清洗}{4}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}数据探索}{5}{subsection.2.2}%
-\contentsline {section}{\numberline {3}描述性统计}{6}{section.3}%
-\contentsline {subsection}{\numberline {3.1}数值型变量统计}{6}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}分类变量统计}{7}{subsection.3.2}%
-\contentsline {section}{\numberline {4}可视化分析}{10}{section.4}%
-\contentsline {subsection}{\numberline {4.1}单变量分析}{10}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}多变量分析}{12}{subsection.4.2}%
-\contentsline {section}{\numberline {5}假设检验}{14}{section.5}%
-\contentsline {subsection}{\numberline {5.1}正态性检验}{14}{subsection.5.1}%
-\contentsline {paragraph}{正态性检验结果解释}{14}{paragraph*.10}%
-\contentsline {subsection}{\numberline {5.2}非参数检验}{14}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Mann-Whitney U 检验}{14}{subsubsection.5.2.1}%
-\contentsline {section}{\numberline {6}数据建模}{15}{section.6}%
-\contentsline {subsection}{\numberline {6.1}线性回归}{15}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}分类模型}{15}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}聚类分析}{16}{subsection.6.3}%
-\contentsline {section}{\numberline {7}结论与建议}{16}{section.7}%
-\contentsline {subsection}{\numberline {7.1}主要发现}{16}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}局限性}{16}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}建议}{16}{subsection.7.3}%
+\contentsline {section}{\numberline {1}引言}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}研究背景}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}数据来源}{3}{subsection.1.2}%
+\contentsline {section}{\numberline {2}数据预处理}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}数据加载与清洗}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}数据探索}{4}{subsection.2.2}%
+\contentsline {section}{\numberline {3}描述性统计}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}数值型变量统计}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}分类变量统计}{6}{subsection.3.2}%
+\contentsline {section}{\numberline {4}可视化分析}{9}{section.4}%
+\contentsline {subsection}{\numberline {4.1}单变量分析}{9}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}多变量分析}{11}{subsection.4.2}%
+\contentsline {section}{\numberline {5}假设检验}{13}{section.5}%
+\contentsline {subsection}{\numberline {5.1}非参数检验：Mann-Whitney U 检验}{13}{subsection.5.1}%
+\contentsline {paragraph}{检验变量选择说明}{13}{paragraph*.9}%
+\contentsline {paragraph}{结果解释}{13}{paragraph*.11}%
+\contentsline {section}{\numberline {6}数据建模}{14}{section.6}%
+\contentsline {subsection}{\numberline {6.1}逻辑回归}{14}{subsection.6.1}%
+\contentsline {paragraph}{模型构建与评估}{14}{paragraph*.12}%
+\contentsline {paragraph}{模型结果}{14}{paragraph*.13}%
+\contentsline {subsection}{\numberline {6.2}模型解释与临床意义}{16}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}模型局限性}{16}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}建议建模方向}{16}{subsection.6.4}%
 \contentsline {section}{\numberline {A}代码附录}{16}{appendix.A}%
 \contentsline {subsection}{\numberline {A.1}数据预处理代码}{16}{subsection.A.1}%
 \contentsline {subsubsection}{\numberline {A.1.1}Python数据加载与清洗}{16}{subsubsection.A.1.1}%
 \contentsline {subsubsection}{\numberline {A.1.2}R数据加载与清洗}{17}{subsubsection.A.1.2}%
-\contentsline {subsection}{\numberline {A.2}描述性统计代码}{18}{subsection.A.2}%
-\contentsline {subsubsection}{\numberline {A.2.1}Python描述性统计}{18}{subsubsection.A.2.1}%
+\contentsline {subsection}{\numberline {A.2}描述性统计代码}{17}{subsection.A.2}%
+\contentsline {subsubsection}{\numberline {A.2.1}Python描述性统计}{17}{subsubsection.A.2.1}%
 \contentsline {subsubsection}{\numberline {A.2.2}R描述性统计}{18}{subsubsection.A.2.2}%
 \contentsline {subsection}{\numberline {A.3}可视化分析代码}{19}{subsection.A.3}%
 \contentsline {subsubsection}{\numberline {A.3.1}Python单变量可视化}{19}{subsubsection.A.3.1}%
 \contentsline {subsubsection}{\numberline {A.3.2}Python多变量可视化}{19}{subsubsection.A.3.2}%
 \contentsline {subsubsection}{\numberline {A.3.3}R可视化代码}{20}{subsubsection.A.3.3}%
-\contentsline {subsection}{\numberline {A.4}假设检验代码}{21}{subsection.A.4}%
-\contentsline {subsubsection}{\numberline {A.4.1}Python假设检验}{21}{subsubsection.A.4.1}%
-\contentsline {subsubsection}{\numberline {A.4.2}R假设检验}{21}{subsubsection.A.4.2}%
-\contentsline {subsection}{\numberline {A.5}数据建模代码}{22}{subsection.A.5}%
-\contentsline {subsubsection}{\numberline {A.5.1}Python建模代码}{22}{subsubsection.A.5.1}%
-\contentsline {subsubsection}{\numberline {A.5.2}R建模代码}{23}{subsubsection.A.5.2}%
-\contentsline {section}{\numberline {B}数据字典}{24}{appendix.B}%
-\contentsline {section}{\numberline {C}附加图表}{24}{appendix.C}%
+\contentsline {subsection}{\numberline {A.4}假设检验代码}{20}{subsection.A.4}%
+\contentsline {subsubsection}{\numberline {A.4.1}Python Mann-Whitney U 检验代码}{20}{subsubsection.A.4.1}%
+\contentsline {subsection}{\numberline {A.5}数据建模代码}{21}{subsection.A.5}%
+\contentsline {subsubsection}{\numberline {A.5.1}Python 逻辑回归建模代码}{21}{subsubsection.A.5.1}%
+\contentsline {section}{\numberline {B}数据字典}{23}{appendix.B}%

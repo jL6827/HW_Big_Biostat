@@ -57,7 +57,7 @@
 }
 
 \title{数据分析报告}
-\author{你的名字}
+\author{董泓麟\quad 李嘉俊}
 \date{\today}
 
 \begin{document}
@@ -266,7 +266,7 @@ Income & 8 & 90385 & 35.63 \\
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{../figs/multivariate/BMI\_MentHlth\_PhysHlth\_heatmap.png}
-    \caption{数值变量相关性热力图。BMI 与 PhysHlth 相关系数约为 0.15（弱相关），其他变量相关性接近 0，数据独立性较好。}
+    \caption{数值变量相关性热力图。MentHlth 与 PhysHlth 相关系数约为 0.35（弱相关），其他变量相关性都较小，数据独立性较好。}
     \label{fig:heatmap}
 \end{figure}
 
@@ -286,35 +286,10 @@ Income & 8 & 90385 & 35.63 \\
 
 
 \section{假设检验}
-\subsection{正态性检验}
-检验数据是否符合正态分布。对连续型数据进行检验。
 
-使用 Shapiro-Wilk 检验，p-value > 0.05 表示数据符合正态分布。
+\subsection{非参数检验：Mann-Whitney U 检验}
 
-\begin{table}[H]
-\centering
-\small
-\caption{连续变量正态性检验结果}
-\label{tab:normality_test}
-\begin{tabular}{lccc}
-\toprule
-Variable & Statistic & p-value & Normality \\
-\midrule
-BMI & 0.8717 & 2.81e-139 & No \\
-MentHlth & 0.4869 & 2.12e-185 & No \\
-PhysHlth & 0.5385 & 1.22e-181 & No \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{正态性检验结果解释}
-检验结果显示，BMI、MentHlth 和 PhysHlth 均不服从正态分布（p-value非常小）。这并非异常，因为健康指标数据在现实中往往偏离正态分布。BMI 分布右偏（正偏度），多数样本集中在 20-35 范围内，但肥胖人群形成长尾；MentHlth 和 PhysHlth 大多数值为 0（表示健康），少数异常值导致右偏。这些特征不符合正态分布的对称性和钟形曲线。
-
-原始数据反映真实人群，健康指标常为“零膨胀”或偏斜分布，而非理想正态。Shapiro-Wilk 检验对偏斜和异常值敏感，故拒绝正态假设。健康数据有时被误以为正态，但实际人口调查数据（如年龄、收入）很少完全正态。这不影响数据有效性，只是提醒使用非参数方法。对于这类不正态数据，考虑非参数检验进行分析（如 Mann-Whitney U 检验）。
-
-\subsection{非参数检验}
-\subsubsection{Mann-Whitney U 检验}
-用于比较两独立组的差异。例如，比较糖尿病组（Diabetes\_binary=1）和非糖尿病组（Diabetes\_binary=0）的 BMI 中位数差异。
+用于比较两独立组的差异。例如，比较糖尿病组（Diabetes\_binary=1）和非糖尿病组（Diabetes\_binary=0）的 BMI、MentHlth 和 PhysHlth 的中位数差异。
 
 检验假设：
 
@@ -323,6 +298,9 @@ $H_0$ :两组分布相同；
 $H_1$ :两组分布不同。
 
 检验统计量：$U = n_1 n_2 + \frac{n_1(n_1+1)}{2} - R_1$，其中 $R_1$ 为第一组秩和，p-value < 0.05 表示显著差异。
+
+\paragraph{检验变量选择说明}
+选取 BMI、MentHlth 和 PhysHlth 三个变量进行 Mann-Whitney U 检验，原因是这三个变量的取值范围较大，适合比较其在糖尿病组与非糖尿病组之间的位置参数差异。其余变量多为分类变量，更适合进行比例比较或逻辑回归建模，而不适用于比较位置参数。
 
 \begin{table}[H]
 \centering
@@ -333,43 +311,61 @@ $H_1$ :两组分布不同。
 \toprule
 Variable & U Statistic & p-value & Significant \\
 \midrule
-BMI & 2405335216.5 & 0.00e+00 & Yes \\
-MentHlth & 3648123651.5 & 1.75e-90 & Yes \\
-PhysHlth & 2986457157.0 & 0.00e+00 & Yes \\
+BMI & 2405335216.50 & 0.000000 & Yes \\
+MentHlth & 3648123651.50 & 0.000000 & Yes \\
+PhysHlth & 2986457157.00 & 0.000000 & Yes \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-
-\textbf{解释}：BMI 在糖尿病组中显著高于非糖尿病组（p-value < 0.05），证实 BMI 为风险因素。MentHlth 和 PhysHlth 差异较小，但仍显著。
-
-p-value 极小（趋近 0）是因为样本量巨大（超过 25 万），Mann-Whitney U 检验对大样本差异高度敏感。即使 BMI 中位数差异小，统计上也显著（p < 0.05），证实 BMI 为糖尿病风险因素。MentHlth 和 PhysHlth 在糖尿病组中显著较低，表明健康较差与糖尿病相关。p-value 小不影响结论，只是表示证据强。
+\paragraph{结果解释}
+BMI 在糖尿病组中显著高于非糖尿病组（p-value < 0.05），证实 BMI 为关键风险因素。MentHlth 和 PhysHlth 在两组间也存在显著差异。值得注意的是，p-value 极小（趋近 0）是由于样本量巨大（超过 25 万），Mann-Whitney U 检验对大样本差异高度敏感，这并不影响结论的有效性。
 
 \section{数据建模}
-\subsection{线性回归}
-建立线性回归模型，分析变量间的线性关系。
+\subsection{逻辑回归}
+由于目标变量 Diabetes\_binary 为二元分类变量（0=无糖尿病，1=有糖尿病），不适合使用普通线性回归，因此采用逻辑回归进行建模分析。
 
-\subsection{分类模型}
-使用逻辑回归等分类算法。
+\paragraph{模型构建与评估}
+使用 sklearn 中的 LogisticRegression 模型进行训练，采用 75\% 的数据作为训练集，25\% 作为测试集，并保持类别分布平衡（stratify=y）。模型评估指标包括准确率、AUC 值、混淆矩阵和分类报告。
 
-\subsection{聚类分析}
-对数据进行聚类分析。
-
-\section{结论与建议}
-\subsection{主要发现}
-总结分析过程中的主要发现。
-
-\subsection{局限性}
-讨论分析的局限性。
-
-\subsection{建议}
-基于分析结果提出建议。
-
-\section*{参考文献}
+\paragraph{模型结果}
 \begin{itemize}
-    \item 参考文献1
-    \item 参考文献2
+    \item \textbf{准确率}：0.817
+    \item \textbf{AUC}：0.821
+    \item \textbf{混淆矩阵}：\\
+    真实为“无糖尿病”预测正确 53328 例，误判为“糖尿病” 7444 例；\\
+    真实为“糖尿病”预测正确 1393 例，误判为“无糖尿病” 5445 例。
+    \item \textbf{关键影响因素（按 OR 值排序）}：\\
+    通过计算系数与 OR（Odds Ratio）值，提取前 15 个最有影响力的因素，结果如下（详见附录代码）。
 \end{itemize}
+
+\subsection*{ROC 曲线与混淆矩阵可视化}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../figs/model/roc_curve.png}
+    \caption{ROC 曲线（AUC = 0.821）}
+    \label{fig:roc_curve}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../figs/model/confusion_matrix.png}
+    \caption{混淆矩阵}
+    \label{fig:confusion_matrix}
+\end{figure}
+
+\subsection{模型解释与临床意义}
+逻辑回归模型显示，BMI、高血压（HighBP）、胆固醇（HighChol）等为糖尿病的重要预测因子。OR 值大于 1 的变量表示增加糖尿病风险，小于 1 的变量表示降低风险。模型结果可为临床干预和公共卫生策略提供参考依据。
+
+\subsection{模型局限性}
+\begin{itemize}
+    \item 数据为横断面调查，无法推断因果关系。
+    \item 类别不平衡可能影响少数类别的预测性能。
+    \item 模型未考虑变量间的交互作用。
+\end{itemize}
+
+\subsection{建议建模方向}
+未来可考虑集成学习（如随机森林、XGBoost）或深度学习模型（如LSTM，Unet）进一步提升预测性能，并结合时间序列数据开展纵向研究。
 
 \appendix
 \section{代码附录}
@@ -384,7 +380,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # 加载数据
-data = pd.read_csv('your_dataset.csv')
+data = pd.read_csv('combined.csv') # 这是数据文件名
 
 # 数据清洗
 # 处理缺失值
@@ -401,7 +397,7 @@ print(data.head())
 \subsubsection{R数据加载与清洗}
 \begin{lstlisting}[style=R, caption=R数据加载与清洗]
 # 加载数据
-data <- read.csv('your_dataset.csv')
+data <- read.csv('combined.csv')
 
 # 数据清洗
 # 处理缺失值
@@ -511,122 +507,178 @@ corrplot(cor_matrix, method = "color")
 \end{lstlisting}
 
 \subsection{假设检验代码}
+\label{app:hypothesis_code}
 
-\subsubsection{Python假设检验}
-\begin{lstlisting}[style=python, caption=Python假设检验]
-from scipy.stats import shapiro, normaltest, ttest_ind, ttest_rel
+\subsubsection{Python Mann-Whitney U 检验代码}
+\begin{lstlisting}[style=python, caption=Python Mann-Whitney U 检验]
+from ucimirepo import fetch_ucirepo
+import pandas as pd
+from scipy.stats import mannwhitneyu
 
-# 正态性检验
-for column in data.select_dtypes(include=[np.number]).columns:
-    stat, p = shapiro(data[column])
-    print(f'{column}: Shapiro-Wilk检验 p值 = {p:.4f}')
+cdc = fetch_ucirepo(id=891)
+df = cdc.data.features.copy()
+df['Diabetes_binary'] = cdc.data.targets
 
-# D'Agostino检验
-for column in data.select_dtypes(include=[np.number]).columns:
-    stat, p = normaltest(data[column])
-    print(f'{column}: D\'Agostino检验 p值 = {p:.4f}')
+group0 = df[df['Diabetes_binary'] == 0]
+group1 = df[df['Diabetes_binary'] == 1]
 
-# 独立样本t检验示例
-group1 = data[data['group'] == 'A']['value']
-group2 = data[data['group'] == 'B']['value']
-t_stat, p_value = ttest_ind(group1, group2)
-print(f"独立样本t检验: t统计量={t_stat:.4f}, p值={p_value:.4f}")
-
-# 配对样本t检验示例
-t_stat, p_value = ttest_rel(data['before'], data['after'])
-print(f"配对样本t检验: t统计量={t_stat:.4f}, p值={p_value:.4f}")
-\end{lstlisting}
-
-\subsubsection{R假设检验}
-\begin{lstlisting}[style=R, caption=R假设检验]
-# 正态性检验
-for(col in names(data)[sapply(data, is.numeric)]){
-    result <- shapiro.test(data[[col]])
-    cat(col, ": Shapiro-Wilk检验 p值 =", result$p.value, "\n")
-}
-
-# t检验
-t_test_result <- t.test(value ~ group, data=data)
-print(t_test_result)
-
-# 方差分析
-anova_result <- aov(value ~ group, data=data)
-summary(anova_result)
-
-# 多因素方差分析
-anova_result2 <- aov(value ~ group1 * group2, data=data)
-summary(anova_result2)
+for col in ['BMI', 'MentHlth', 'PhysHlth']:
+    u, p = mannwhitneyu(group0[col].dropna(),
+                        group1[col].dropna(),
+                        alternative='two-sided')
+    print(f"{col:<10} | U = {u:>12.2f} | p = {p:>12.6f}")
 \end{lstlisting}
 
 \subsection{数据建模代码}
+\label{app:logistic_code}
 
-\subsubsection{Python建模代码}
-\begin{lstlisting}[style=python, caption=Python线性回归]
-from sklearn.linear_model import LinearRegression, LogisticRegression
+\subsubsection{Python 逻辑回归建模代码}
+\begin{lstlisting}[style=python, caption=Python 逻辑回归建模]
+from ucimirepo import fetch_ucirepo
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (classification_report, roc_auc_score,
+                             roc_curve, confusion_matrix, accuracy_score)
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score, classification_report, confusion_matrix
 
-# 线性回归
-X = data[['feature1', 'feature2', 'feature3']]
-y = data['target']
+cdc = fetch_ucirepo(id=891)
+X = cdc.data.features
+y = cdc.data.targets
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y)
 
-model = LinearRegression()
-model.fit(X_train, y_train)
+logit = LogisticRegression(max_iter=1000)
+logit.fit(X_train, y_train)
 
-y_pred = model.predict(X_test)
+y_pred = logit.predict(X_test)
+y_pred_proba = logit.predict_proba(X_test)[:, 1]
 
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-print(f"均方误差: {mse:.4f}")
-print(f"R²分数: {r2:.4f}")
+print(classification_report(y_test, y_pred))
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
+print(f"AUC: {roc_auc_score(y_test, y_pred_proba):.3f}")
 
-# 逻辑回归
-X_class = data[['feature1', 'feature2']]
-y_class = data['class']
+# ROC 曲线
+fpr, tpr, _ = roc_curve(y_test, y_pred_proba)
+plt.figure(figsize=(5, 4))
+sns.lineplot(x=fpr, y=tpr, label=f"ROC (AUC = {roc_auc_score(y_test, y_pred_proba):.3f})")
+plt.plot([0, 1], [0, 1], 'k--')
+plt.xlabel('FPR')
+plt.ylabel('TPR')
+plt.title('ROC Curve')
+plt.tight_layout()
+plt.show()
 
-X_train_c, X_test_c, y_train_c, y_test_c = train_test_split(X_class, y_class, test_size=0.3, random_state=42)
+# 混淆矩阵
+plt.figure(figsize=(4, 3))
+sns.heatmap(confusion_matrix(y_test, y_pred),
+            annot=True, fmt='d', cmap='Blues',
+            xticklabels=['No', 'Diabetes'],
+            yticklabels=['No', 'Diabetes'])
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.tight_layout()
+plt.show()
 
-log_model = LogisticRegression()
-log_model.fit(X_train_c, y_train_c)
-
-y_pred_c = log_model.predict(X_test_c)
-
-print("分类报告:")
-print(classification_report(y_test_c, y_pred_c))
-print("混淆矩阵:")
-print(confusion_matrix(y_test_c, y_pred_c))
-\end{lstlisting}
-
-\subsubsection{R建模代码}
-\begin{lstlisting}[style=R, caption=R建模代码]
-# 线性回归
-model <- lm(target ~ feature1 + feature2 + feature3, data=data)
-summary(model)
-
-# 模型诊断
-par(mfrow=c(2,2))
-plot(model)
-
-# 逻辑回归
-log_model <- glm(class ~ feature1 + feature2, data=data, family=binomial)
-summary(log_model)
-
-# 聚类分析
-set.seed(123)
-kmeans_result <- kmeans(scale(data[sapply(data, is.numeric)]), centers=3)
-table(kmeans_result$cluster)
-
-# 可视化聚类结果
-library(factoextra)
-fviz_cluster(kmeans_result, data = data[sapply(data, is.numeric)])
+# 提取关键影响因素
+coef_df = (pd.DataFrame({'Feature': X.columns,
+                         'Coefficient': logit.coef_[0],
+                         'OR': np.exp(logit.coef_[0])})
+           .assign(Abs_OR=lambda d: d['OR'].abs())
+           .sort_values('Abs_OR', ascending=False))
+print('\nTop 15 most influential factors (OR)')
+print(coef_df.head(15).round(3))
 \end{lstlisting}
 
 \section{数据字典}
-提供数据字段的详细说明。
+\label{app:data_dict}
 
-\section{附加图表}
-额外的分析图表。
+\begin{longtable}{p{4cm}p{2cm}p{8cm}}
+\caption{数据字段说明表}\label{tab:data_dictionary} \\
+\toprule
+\textbf{变量名称} & \textbf{类型} & \textbf{描述与取值范围} \\
+\midrule
+\endfirsthead
+
+\multicolumn{3}{c}%
+{{\bfseries 续表 \thetable\ 数据字段说明表}} \\
+\toprule
+\textbf{变量名称} & \textbf{类型} & \textbf{描述与取值范围} \\
+\midrule
+\endhead
+
+\midrule
+\multicolumn{3}{r}{{续下页}} \\
+\endfoot
+
+\midrule
+\endlastfoot
+
+Diabetes\_binary & 二元分类 & 糖尿病诊断结果：0 = 无糖尿病，1 = 有糖尿病 \\
+\midrule
+HighBP & 二元分类 & 高血压诊断：0 = 无，1 = 有 \\
+\midrule
+HighChol & 二元分类 & 高胆固醇诊断：0 = 无，1 = 有 \\
+\midrule
+CholCheck & 二元分类 & 过去5年内是否检查过胆固醇：0 = 否，1 = 是 \\
+\midrule
+BMI & 连续 & 身体质量指数（Body Mass Index），取值范围：12-98 \\
+\midrule
+Smoker & 二元分类 & 是否吸烟（至少100支香烟）：0 = 否，1 = 是 \\
+\midrule
+Stroke & 二元分类 & 是否曾患中风：0 = 否，1 = 是 \\
+\midrule
+HeartDiseaseorAttack & 二元分类 & 是否患有冠心病或心肌梗死：0 = 否，1 = 是 \\
+\midrule
+PhysActivity & 二元分类 & 过去30天内是否有体育锻炼：0 = 否，1 = 是 \\
+\midrule
+Fruits & 二元分类 & 每日水果摄入是否≥1次：0 = 否，1 = 是 \\
+\midrule
+Veggies & 二元分类 & 每日蔬菜摄入是否≥1次：0 = 否，1 = 是 \\
+\midrule
+HvyAlcoholConsump & 二元分类 & 重度饮酒（男性：每周≥14杯；女性：每周≥7杯）：0 = 否，1 = 是 \\
+\midrule
+AnyHealthcare & 二元分类 & 是否有医疗保险：0 = 否，1 = 是 \\
+\midrule
+NoDocbcCost & 二元分类 & 是否因费用问题未就医：0 = 否，1 = 是 \\
+\midrule
+GenHlth & 序数分类 & 总体健康状况：1 = 优秀，2 = 非常好，3 = 好，4 = 一般，5 = 差 \\
+\midrule
+MentHlth & 连续 & 过去30天心理健康不佳天数，取值范围：0-30 \\
+\midrule
+PhysHlth & 连续 & 过去30天身体健康不佳天数，取值范围：0-30 \\
+\midrule
+DiffWalk & 二元分类 & 是否因健康问题行走困难：0 = 否，1 = 是 \\
+\midrule
+Sex & 二元分类 & 性别：0 = 女性，1 = 男性 \\
+\midrule
+Age & 次序分类 & 年龄分组：\\
+& & 1=18-24, 2=25-29, 3=30-34, 4=35-39, \\
+& & 5=40-44, 6=45-49, 7=50-54, 8=55-59,\\
+& & 9=60-64, 10=65-69, 11=70-74,\\ 
+& & 12=75-79, 13：$\geq $80 \\
+\midrule
+Education & 次序分类 & 教育程度：\\
+& & 1=未上过学，2=小学，3=初中，4=高中，5=大专，6=本科及以上 \\
+\midrule
+Income & 次序分类 & 家庭年收入（美元）：\\
+& & 1: $\leq 10k$, 2: $10k-15k$, 3: $15k-20k$,\\
+& & 4: $20k-25k$, 5: $25k-35k$,\\
+& & 6: $35k-50k$, 7: $50k-75k$, 8: $\geq 75k$ \\
+\bottomrule
+\end{longtable}
+
+\textbf{数据说明：}
+\begin{itemize}
+    \item 数据来源于 CDC BRFSS 2021 年度调查，共包含 253,680 条有效记录。
+    \item 所有分类变量（二元/序数）均已进行编码处理，便于统计分析。
+    \item 连续变量 BMI、MentHlth、PhysHlth 已进行异常值检测与处理。
+    \item 数据已清洗，无缺失值，可直接用于建模与分析。
+\end{itemize}
+
 
 \end{document}
